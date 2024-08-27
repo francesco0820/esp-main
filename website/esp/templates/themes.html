@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/themes.css">
+    <link rel="icon" type="image/png" href="../static/images/bliss-mark-black.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>ESP: Thematic Distributions</title>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a class="bliss-logo" href="https://www.theblissgrp.com/"><img src="../static/images/bliss_logo.png" alt="The Bliss Group logo"/></a>
+            <ul class="nav-list">
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="themes-section" id="thematic-insights">
+        <div class="head">
+            Theme Definitions
+        </div>
+        <div class="theme-cards">
+            <div class="theme-card">
+                <img src="../static/themes/2.svg" alt="AI/ML" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/3.svg" alt="Cost Management & Optimization" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/4.svg" alt="Customer Experience" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/5.svg" alt="Data & Analytics" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/6.svg" alt="Data Privacy & Cybersecurity" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/7.svg" alt="DEI" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/8.svg" alt="Economic Outlook" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/9.svg" alt="Environmental Sustainability" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/10.svg" alt="Geopolitics" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/11.svg" alt="Health Insurance" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/12.svg" alt="Health Outcomes" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <a href="/thematic/Leadership/">
+                    <img src="../static/themes/13.svg" alt="Leadership" onclick="openModal(this)">
+                </a>
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/14.svg" alt="Product Development" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/15.svg" alt="Regulation & Legislation" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/16.svg" alt="Supply Chain" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/17.svg" alt="Transactions" onclick="openModal(this)">
+            </div>
+            <div class="theme-card">
+                <img src="../static/themes/18.svg" alt="Workforce Strategy" onclick="openModal(this)">
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-content" id="modalImage">
+            <img id="modalImg" src="">
+        </div>
+    </div>
+
+    <div class="r_and_a">
+        <a href="mailto:RA@TheBlissGrp.com">
+            <img src="../static/images/r&a.png" alt="Email Us"/>
+        </a>
+    </div>  
+      
+    <script>
+        // Function to open the modal with a different image
+        function openModal(image) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImg");
+
+            // Map of thumbnail images to modal images
+            const imageMap = {
+                "/static/themes/2.svg": "/static/thematic-themes/2.svg", // Replace with the actual large image path
+                "/static/themes/3.svg": "/static/thematic-themes/3.svg",
+                "/static/themes/4.svg": "/static/thematic-themes/4.svg",
+                "/static/themes/5.svg": "/static/thematic-themes/5.svg",
+                "/static/themes/6.svg": "/static/thematic-themes/6.svg",
+                "/static/themes/7.svg": "/static/thematic-themes/7.svg",
+                "/static/themes/8.svg": "/static/thematic-themes/8.svg",
+                "/static/themes/9.svg": "/static/thematic-themes/9.svg",
+                "/static/themes/10.svg": "/static/thematic-themes/10.svg",
+                "/static/themes/11.svg": "/static/thematic-themes/11.svg",
+                "/static/themes/12.svg": "/static/thematic-themes/12.svg",
+                "/static/themes/13.svg": "/static/thematic-themes/13.svg",
+                "/static/themes/14.svg": "/static/thematic-themes/14.svg",
+                "/static/themes/15.svg": "/static/thematic-themes/15.svg",
+                "/static/themes/16.svg": "/static/thematic-themes/16.svg",
+                "/static/themes/17.svg": "/static/thematic-themes/17.svg",
+                "/static/themes/18.svg": "/static/thematic-themes/18.svg"
+            };
+
+            // Get just the path part of the URL, ignoring the domain
+            const path = new URL(image.src, window.location.origin).pathname;
+
+            // Get the corresponding modal image source
+            const modalImageSrc = imageMap[path] || image.src; // Fallback to the same image if not found
+
+            console.log("Clicked image src:", path); // For debugging
+            console.log("Modal image src:", modalImageSrc); // For debugging
+
+            modal.style.display = "block";
+            modalImg.src = modalImageSrc;
+        }
+    
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+    
+        // Close the modal when clicking outside of the modal content
+        window.onclick = function(event) {
+            const modal = document.getElementById("imageModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+    </script>    
+</body>
+</html>

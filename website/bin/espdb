@@ -1,0 +1,317 @@
+########################################## NEW CODE #################################
+#!/bin/bash
+# esp_rebuild_db
+
+# Stop on errors
+# See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+
+# Sanity check command line options
+usage() {
+  echo "Usage: $0 (create|destroy|reset|dump)"
+  exit 1
+}
+
+if [ $# -ne 1 ]; then
+  usage
+fi
+
+# Determine the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Parse argument. $1 is the first argument
+case $1 in
+  "create")
+    mkdir -p "$SCRIPT_DIR/../var/uploads"
+    sqlite3 "$SCRIPT_DIR/../var/esp.sqlite3" < "$SCRIPT_DIR/../sql/schema.sql"
+
+    python3 "$SCRIPT_DIR/../upload/userUpload.py" "$SCRIPT_DIR/../data/execs.csv"
+    python3 "$SCRIPT_DIR/../upload/dataUpload.py" "$SCRIPT_DIR/../data/data.csv"
+    ;;
+
+  "destroy")
+    rm -rf "$SCRIPT_DIR/../var/esp.sqlite3" "$SCRIPT_DIR/../var/uploads"
+    ;;
+
+  "reset")
+    rm -rf "$SCRIPT_DIR/../var/esp.sqlite3" "$SCRIPT_DIR/../var/uploads"
+    mkdir -p "$SCRIPT_DIR/../var/uploads"
+    sqlite3 "$SCRIPT_DIR/../var/esp.sqlite3" < "$SCRIPT_DIR/../sql/schema.sql"
+    python3 "$SCRIPT_DIR/../upload/userUpload.py" "$SCRIPT_DIR/../data/execs.csv"
+    python3 "$SCRIPT_DIR/../upload/dataUpload.py" "$SCRIPT_DIR/../data/data.csv"
+    ;;
+
+  "dump")
+    # Dump data from each table
+    echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Users'"
+    sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Users'
+
+    echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Posts'"
+    sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Posts'
+
+    echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Engagements'"
+    sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Engagements'
+
+    echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Reactions'"
+    sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Reactions'
+    ;;
+
+  *)
+    usage
+    ;;
+esac
+
+
+# #!/bin/bash
+# # esp_rebuild_db
+
+# # Stop on errors
+# # See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -Eeuo pipefail
+
+# # Sanity check command line options
+# usage() {
+#   echo "Usage: $0 (create|destroy|reset|dump)"
+# }
+
+# if [ $# -ne 1 ]; then
+#   usage
+#   exit 1
+# fi
+
+# # Parse argument.  $1 is the first argument
+# case $1 in
+#   "create")
+#     mkdir -p var/uploads
+#     sqlite3 var/esp.sqlite3 < sql/schema.sql
+#     python3 upload/userUpload.py data/execs.csv
+#     python3 upload/dataUpload.py data/data.csv
+#     ;;
+
+#   "destroy")
+#     rm -rf var/esp.sqlite3 var/uploads
+#     ;;
+
+#   "reset")
+#     rm -rf var/esp.sqlite3 var/uploads
+#     mkdir -p var/uploads
+#     sqlite3 var/esp.sqlite3 < sql/schema.sql
+#     python3 upload/userUpload.py data/execs.csv
+#     python3 upload/dataUpload.py data/data.csv
+#     ;;
+
+#   "dump")
+#     # Dump data from each table
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Users'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Users'
+
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Posts'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Posts'
+
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Engagements'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Engagements'
+
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Reactions'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Reactions'
+#     ;;
+
+#   *)
+#     usage
+#     exit 1
+#     ;;
+# esac
+
+# ########################################## NEW CODE #################################
+# #!/bin/bash
+# # esp_rebuild_db
+
+# # Stop on errors
+# # See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -Eeuo pipefail
+
+# # Sanity check command line options
+# usage() {
+#   echo "Usage: $0 (create|destroy|reset|dump)"
+#   exit 1
+# }
+
+# if [ $# -ne 1 ]; then
+#   usage
+# fi
+
+# # Determine the directory where the script is located
+# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# # Parse argument. $1 is the first argument
+# case $1 in
+#   "create")
+#     mkdir -p "$SCRIPT_DIR/../var/uploads"
+#     sqlite3 "$SCRIPT_DIR/../var/esp.sqlite3" < "$SCRIPT_DIR/../sql/schema.sql"
+
+#     python3 "$SCRIPT_DIR/../upload/userUpload.py" "$SCRIPT_DIR/../data/execs.csv"
+#     python3 "$SCRIPT_DIR/../upload/dataUpload.py" "$SCRIPT_DIR/../data/data.csv"
+#     ;;
+
+#   "destroy")
+#     rm -rf "$SCRIPT_DIR/../var/esp.sqlite3" "$SCRIPT_DIR/../var/uploads"
+#     ;;
+
+#   "reset")
+#     rm -rf "$SCRIPT_DIR/../var/esp.sqlite3" "$SCRIPT_DIR/../var/uploads"
+#     mkdir -p "$SCRIPT_DIR/../var/uploads"
+#     sqlite3 "$SCRIPT_DIR/../var/esp.sqlite3" < "$SCRIPT_DIR/../sql/schema.sql"
+#     python3 "$SCRIPT_DIR/../upload/userUpload.py" "$SCRIPT_DIR/../data/execs.csv"
+#     python3 "$SCRIPT_DIR/../upload/dataUpload.py" "$SCRIPT_DIR/../data/data.csv"
+#     ;;
+
+#   "dump")
+#     # Dump data from each table
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Users'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Users'
+
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Posts'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Posts'
+
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Engagements'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Engagements'
+
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Reactions'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Reactions'
+#     ;;
+
+#   *)
+#     usage
+#     ;;
+# esac
+
+
+
+
+
+# #!/bin/bash
+# # esp_rebuild_db
+
+# # Stop on errors
+# # See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -Eeuo pipefail
+
+# # Sanity check command line options
+# usage() {
+#   echo "Usage: $0 (create|destroy|reset|dump)"
+# }
+
+# if [ $# -ne 1 ]; then
+#   usage
+#   exit 1
+# fi
+
+# # Parse argument.  $1 is the first argument
+# case $1 in
+#   "create")
+#     mkdir -p var/uploads
+#     sqlite3 var/esp.sqlite3 < sql/schema.sql
+#     python3 upload/userUpload.py data/execs.csv
+#     python3 upload/dataUpload.py data/data.csv
+#     ;;
+
+#   "destroy")
+#     rm -rf var/esp.sqlite3 var/uploads
+#     ;;
+
+#   "reset")
+#     rm -rf var/esp.sqlite3 var/uploads
+#     mkdir -p var/uploads
+#     sqlite3 var/esp.sqlite3 < sql/schema.sql
+#     python3 upload/userUpload.py data/execs.csv
+#     python3 upload/dataUpload.py data/data.csv
+#     ;;
+
+#   "dump")
+#     # Dump data from each table
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Users'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Users'
+
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Posts'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Posts'
+
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Engagements'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Engagements'
+
+#     echo "+ sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Reactions'"
+#     sqlite3 -batch -line var/esp.sqlite3 'SELECT * FROM Reactions'
+#     ;;
+
+#   *)
+#     usage
+#     exit 1
+#     ;;
+# esac
+
+
+
+
+########################################### NEW CODE #################################
+# #!/bin/bash
+# # esp_rebuild_db
+
+# # Stop on errors
+# # See https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+# set -Eeuo pipefail
+
+# # Sanity check command line options
+# usage() {
+#   echo "Usage: $0 (create|destroy|reset|dump)"
+#   exit 1
+# }
+
+# if [ $# -ne 1 ]; then
+#   usage
+# fi
+
+# # Determine the directory where the script is located
+# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# # Parse argument. $1 is the first argument
+# case $1 in
+#   "create")
+#     mkdir -p "$SCRIPT_DIR/../var/uploads"
+#     sqlite3 "$SCRIPT_DIR/../var/esp.sqlite3" < "$SCRIPT_DIR/../sql/schema.sql"
+
+#     python3 "$SCRIPT_DIR/../upload/userUpload.py" "$SCRIPT_DIR/../data/execs.csv"
+#     python3 "$SCRIPT_DIR/../upload/dataUpload.py" "$SCRIPT_DIR/../data/data.csv"
+#     ;;
+
+#   "destroy")
+#     rm -rf "$SCRIPT_DIR/../var/esp.sqlite3" "$SCRIPT_DIR/../var/uploads"
+#     ;;
+
+#   "reset")
+#     rm -rf "$SCRIPT_DIR/../var/esp.sqlite3" "$SCRIPT_DIR/../var/uploads"
+#     mkdir -p "$SCRIPT_DIR/../var/uploads"
+#     sqlite3 "$SCRIPT_DIR/../var/esp.sqlite3" < "$SCRIPT_DIR/../sql/schema.sql"
+#     python3 "$SCRIPT_DIR/../upload/userUpload.py" "$SCRIPT_DIR/../data/execs.csv"
+#     python3 "$SCRIPT_DIR/../upload/dataUpload.py" "$SCRIPT_DIR/../data/data.csv"
+#     ;;
+
+#   "dump")
+#     # Dump data from each table
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Users'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Users'
+
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Posts'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Posts'
+
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Engagements'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Engagements'
+
+#     echo "+ sqlite3 -batch -line $SCRIPT_DIR/../var/esp.sqlite3 'SELECT * FROM Reactions'"
+#     sqlite3 -batch -line "$SCRIPT_DIR/../var/esp.sqlite3" 'SELECT * FROM Reactions'
+#     ;;
+
+#   *)
+#     usage
+#     ;;
+# esac
+
+
+

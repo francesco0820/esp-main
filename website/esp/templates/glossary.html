@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/glossary.css">
+    <link rel="icon" type="image/png" href="../static/images/bliss-mark-black.png">
+    <title>Executive Glossary</title>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a class="bliss-logo" href="https://www.theblissgrp.com/"><img src="../static/images/bliss_logo.png" alt="The Bliss Group logo"/></a>
+            <ul class="nav-list">
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Executive Glossary</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for names..">
+        </div>
+        <div id="executiveList">
+            {% for letter, users_by_letter in users|groupby('last_name_initial') %}
+                <h2>{{ letter }}</h2>
+                {% for user in users_by_letter %}
+                <div class="user-card">
+                    <div class="user-info">
+                        <strong>{{ user['last_name'] }}, {{ user['first_name'] }}</strong>
+                        <span>{{ user['position'] }} at {{ user['company'] }}</span>
+                        <a href="{{ user['profile_url'] }}" target="_blank">View LinkedIn Profile</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="r_and_a">
+        <a href="mailto:RA@TheBlissGrp.com">
+            <img src="../static/images/r&a.png" alt="Email Us"/>
+        </a>
+    </div>
+    <div class="contact-text">Contact Us!</div>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toUpperCase();
+            let userCards = document.querySelectorAll('.user-card');
+            userCards.forEach(card => {
+                let text = card.textContent || card.innerText;
+                card.style.display = text.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+            });
+        });
+        window.addEventListener('load', function() {
+            const contactText = document.querySelector('.contact-text');
+            contactText.style.opacity = '1'; // Make the text visible
+
+            // Hide the text after 10 seconds
+            setTimeout(() => {
+                contactText.style.opacity = '0'; // Fade out the text
+            }, 10000); // 10000 milliseconds = 10 seconds
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/insights.css">
+    <link rel="icon" type="image/png" href="../static/images/bliss-mark-black.png">
+    <title>ESP: Key Insights</title>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a class="bliss-logo" href="https://www.theblissgrp.com/">
+                <img src="../static/images/bliss_logo.png" alt="The Bliss Group logo"/>
+            </a>
+            <ul class="nav-list">
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Edit the month below -->
+        <div class="head">
+            Qualitative Analysis of Audience Pain Points in June 2024
+        </div>
+
+        <!-- Edit, add, or remove insights as needed below. Icons start at the last (T) and can go until (A) as needed. -->
+        <div id="insights-container">
+            <!-- Start insight 1 -->
+            <div class="collapsible-section">
+                <div class="collapsible-header">
+                    <!-- Insight Name -->
+                    <span>Leadership Development</span>
+                    <button class="toggle-btn">+</button>
+                </div>
+                <div class="collapsible-content">
+                    <!-- Start a list -->
+                    <ul>
+                        <!-- Each <li> tag is another bullet point in the list -->
+                        <li>Many companies are "grossly over-managed and severely under-led" indicating a need for effective leadership skills that inspire and empower teams.</li>
+                        <li>A common pain point is how leaders accept and implement feedback from employees, indicating a need for better feedback mechanisms and open communication channels.</li>
+                    </ul>
+                    <img src="../static/icons/Icon_T.png" alt="Icon T" class="collapsible-icon">
+                </div>
+            </div>
+            <!-- End insight 1 -->
+
+            <!-- Start insight 2 -->
+            <div class="collapsible-section">
+                <div class="collapsible-header">
+                    <span>Employee Growth and Retention</span>
+                    <button class="toggle-btn">+</button>
+                </div>
+                <div class="collapsible-content">
+                    <ul>
+                        <li>The need to support junior talent and diverse backgrounds within organizations to foster a more inclusive work environment is a significant focus, indicating the importance of diversity and equity initiatives.</li>
+                        <li>The challenge of balancing achieving results with caring for the well-being of the team is a recurring theme, emphasizing the need for mental health and stress management practices in the workplace.</li>
+                    </ul>
+                    <img src="../static/icons/Icon_S.png" alt="Icon S" class="collapsible-icon">
+                </div>
+            </div>
+            <!-- End insight 2 -->
+
+            <!-- Start insight 3 -->
+            <div class="collapsible-section">
+                <div class="collapsible-header">
+                    <span>Concerns about Data Protection</span>
+                    <button class="toggle-btn">+</button>
+                </div>
+                <div class="collapsible-content">
+                    <ul>
+                        <li>The importance of secure customer data and the implementation of best practices like multi-factor authentication to prevent breaches is a critical concern.</li>
+                        <li>Concerns about AI safety, controllability, and ethical implications highlight the need for better understanding and regulation of AI technologies.</li>
+                    </ul>
+                    <img src="../static/icons/Icon_R.png" alt="Icon R" class="collapsible-icon">
+                </div>
+            </div>
+            <!-- End insight 3 -->
+
+            <!-- Start insight 4 -->
+            <div class="collapsible-section">
+                <div class="collapsible-header">
+                    <span>Need for Creative, yet Data-Driven Solutions</span>
+                    <button class="toggle-btn">+</button>
+                </div>
+                <div class="collapsible-content">
+                    <ul>
+                        <li>There's a focus on the need for better metrics and data-driven decision-making processes to prevent revenue drops and improve performance before it's too late.</li>
+                        <li>The underutilization of humor in advertising and the effectiveness of engaging, memorable content are noted, indicating a need for more creative marketing strategies.</li>
+                    </ul>
+                    <img src="../static/icons/Icon_Q.png" alt="Icon Q" class="collapsible-icon">
+                </div>
+            </div>
+            <!-- End insight 4 -->
+        </div>
+    </main>
+
+    <div class="r_and_a">
+        <a href="mailto:RA@TheBlissGrp.com">
+            <img src="../static/images/r&a.png" alt="Email Us"/>
+        </a>
+    </div>
+    
+    <script>
+        function addCollapsibleFunctionality() {
+            document.querySelectorAll('.collapsible-header').forEach(header => {
+                const section = header.parentElement;
+                const content = section.querySelector('.collapsible-content');
+                const button = header.querySelector('.toggle-btn');
+                const icon = content.querySelector('.collapsible-icon');
+
+                // Ensure content is hidden initially
+                content.style.display = 'none';
+                icon.style.display = 'none'; // Hide the icon initially
+                button.textContent = '+';
+
+                header.addEventListener('click', function() {
+                    if (section.classList.contains('open')) {
+                        content.style.display = 'none';
+                        icon.style.display = 'none';
+                        button.textContent = '+';
+                        section.classList.remove('open');
+                    } else {
+                        content.style.display = 'flex'; // Ensure flexbox behavior is applied
+                        icon.style.display = 'block';
+                        button.textContent = '−';
+                        section.classList.add('open');
+                    }
+                });
+            });
+        }
+        // Initialize collapsible sections on page load
+        addCollapsibleFunctionality();
+    </script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="icon" type="image/png" href="../static/images/bliss-mark-black.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://unpkg.com/simple-statistics@7.0.1"></script>
+    <title>ESP</title>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a class="bliss-logo" href="https://www.theblissgrp.com/"><img src="../static/images/bliss_logo.png" alt="The Bliss Group logo"/></a>
+            <ul class="nav-list">
+                <li><a class="current-page" href="/">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="top-section">
+        <div class="left-content">
+            <div class="head">
+                What do senior executives want?
+            </div>
+            <div class="rest">
+                <p>Get inside the mind of your buyers with the Executive Signals Platform (ESP), our proprietary audience intelligence solution that tracks the online behavior of senior business leaders.
+                Analyzing executive conversations and engagement on LinkedIn, ESP provides insight into the interests, pain points and preferences of business and government executives.
+                With ESP, you can:</p>
+                <ul>
+                    <li>Understand the trends and topics that are top of mind for your key buyers.</li>
+                    <li>Identify the publications that receive the most engagement.</li>
+                    <li>Benchmark your executive social thought leadership program against industry peers.</li>
+                    <li>Gauge what's resonating and where there may be whitespace.</li>
+                </ul>
+                <p>Want to get a pulse on what executives want? Let's chat more about ESP.</p>
+                <a class="chat" href="https://www.theblissgrp.com/contact-us/">
+                    Chat with us >>
+                </a>
+            </div>
+        </div>
+        <img src="../static/images/bliss_blue.webp" alt="Bliss Blue Stock 2"/>
+    </div>
+
+    <div class="card-grid">
+        <a class="card" href="#info-section">
+            <img src="../static/icons/Icon_A.png" alt="Icon A"/>
+            Interactive Dashboard >>
+        </a>
+        <!-- Comment out this section -->
+        <a class="card" href="/insights/">
+            <img src="../static/icons/Icon_B.png" alt="Icon B"/>
+            Key Insights >>
+        </a>
+        <!-- ^^^^^^^^^^^^^^^^^^^^^^^^ -->
+        <a class="card" href="/thematic/">
+            <img src="../static/icons/Icon_C.png" alt="Icon C"/>
+            Thematic Definitions >>
+        </a>
+        <a class="card" href="/glossary/">
+            <img src="../static/icons/Icon_P.png" alt="Icon P"/>
+            Executive Glossary >>
+        </a>
+    </div>
+
+    <div class="info" id="info-section">
+        <div class="filters-container">
+            <button class="toggle-filters" onclick="toggleFilters()">Filters</button>
+            <div class="filters" id="filters-section">
+                <!-- TODO: ADD A TOGGLE FOR POSTS/ ENGAGEMENTS-->
+                 <!-- TOP 25 SHARED POST URL DOMAINS- lnkd is NOT also LinkedIn // Top Post Domains-->
+                <!-- Start Industry Filter -->
+                <div class="filter-group">
+                    <label for="industry-operator">Industry</label>
+                    <div class="filter-inputs">
+                        <select id="industry-operator" onchange="populateOptions('industry')">
+                            <option value="all" selected></option>
+                            <option value="has_any">has any of</option>
+                            <option value="has_all">has all of</option>
+                            <option value="is_exactly">is exactly</option>
+                            <option value="has_none">has none of</option>
+                            <option value="is_empty"> is empty</option>
+                            <option value="is_not_empty">is not empty</option>
+                        </select>
+                        <select id="industry-options">
+                            <!-- Options will be dynamically populated from the database -->
+                        </select>
+                    </div>
+                </div>
+                <!-- End Industry Filter -->
+        
+                <!-- Start Position Filter -->
+                <div class="filter-group">
+                    <label for="position-operator">Position</label>
+                    <div class="filter-inputs">
+                        <select id="position-operator" onchange="populateOptions('position')">
+                            <option value="all" selected></option>
+                            <option value="has_any">has any of</option>
+                            <option value="has_all">has all of</option>
+                            <option value="is_exactly">is exactly</option>
+                            <option value="has_none">has none of</option>
+                            <option value="is_empty"> is empty</option>
+                            <option value="is_not_empty">is not empty</option>
+                        </select>
+                        <select id="position-options">
+                            <!-- Options will be dynamically populated from the database -->
+                        </select>
+                    </div>
+                </div>
+                <!-- End Position Filter -->
+        
+                <!-- Start Company Filter -->
+                <div class="filter-group">
+                    <label for="company-operator">Company</label>
+                    <div class="filter-inputs">
+                        <select id="company-operator" onchange="populateOptions('company')">
+                            <option value="all" selected></option>
+                            <option value="has_any">has any of</option>
+                            <option value="has_all">has all of</option>
+                            <option value="is_exactly">is exactly</option>
+                            <option value="has_none">has none of</option>
+                            <option value="is_empty"> is empty</option>
+                            <option value="is_not_empty">is not empty</option>
+                        </select>
+                        <select id="company-options">
+                            <!-- Options will be dynamically populated from the database -->
+                        </select>
+                    </div>
+                </div>
+                <!-- End Company Filter -->
+        
+                <!-- Start Executive Filter -->
+                <div class="filter-group">
+                    <label for="executive-name">Executive Name</label>
+                    <div class="filter-inputs">
+                        <input type="text" id="executive-name" name="executive-name" onkeyup="fetchExecutiveSuggestions(this.value)" placeholder="Start typing a name...">
+                        <div id="executive-suggestions" class="suggestions-list">
+                            <!-- Suggestions will appear here -->
+                        </div>
+                    </div>
+                </div>
+                <!-- End Executive Filter -->
+        
+                <!-- Start Themes Filter -->
+                <div class="filter-group">
+                    <label for="theme-operator">Themes</label>
+                    <div class="filter-inputs">
+                        <select id="theme-operator" onchange="populateOptions('theme')">
+                            <option value="all" selected></option>
+                            <option value="has_any">has any of</option>
+                            <option value="has_all">has all of</option>
+                            <option value="is_exactly">is exactly</option>
+                            <option value="has_none">has none of</option>
+                            <option value="is_empty"> is empty</option>
+                            <option value="is_not_empty">is not empty</option>
+                        </select>
+                        <select id="theme-options">
+                            <!-- Options will be dynamically populated from the database -->
+                        </select>
+                    </div>
+                </div>
+                <!-- End Themes Filter -->
+        
+                <!-- Start Date Filter -->
+                <div class="filter-group">
+                    <label for="date-start">Start Date</label>
+                    <div class="filter-inputs">
+                        <input type="date" id="date-start" name="date-start">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="date-end">End Date</label>
+                    <div class="filter-inputs">
+                        <input type="date" id="date-end" name="date-end">
+                    </div>
+                </div>
+                <!-- End Date Filter -->
+                <button onclick="applyFilters()">Apply Filters</button>
+                <button onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </div>        
+        <div id="results">
+            <!-- Filtered numerical data displays here -->
+            <div class="summary-grid">
+                <div class="summary-card-1">
+                    <div class="top">Unique Audience Members</div>
+                    <div class="number" id="unique-audience">0</div>
+                </div>
+                <div class="summary-card-2">
+                    <div class="top">Total Unique Posts</div>
+                    <div class="number" id="unique-posts">0</div>
+                </div>
+                <div class="summary-card-3">
+                    <div class="top">Total Engagements on Selected Audience Posts</div>
+                    <div class="number" id="total-engagements">0</div>
+                </div>
+                <div class="summary-card-4">
+                    <div class="top">Average Engagements Per Post</div>
+                    <div class="number" id="average-engagements">0</div>
+                </div>
+            </div>
+            <div class="chart-grid">
+                <!-- Filtered graphs render here -->
+                <div class="chart">
+                    <div class="chart-title">
+                        Posts vs Engagements
+                    </div>
+                    <canvas id="postsEngagementsChart"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">
+                        Top 10 Executives
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Executive</th>
+                                <th>Post #</th>
+                                <th>Engagement #</th>
+                                <th>Total #</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topExecutivesTableBody">
+                            <!-- Table rows will be dynamically populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">
+                        Post Volume Over Time
+                    </div>
+                    <canvas id="postsVolumeChart"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">
+                        Engagement Volume Over Time
+                    </div>
+                    <canvas id="engagementsVolumeChart"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">
+                        Top Themes by Post Volume
+                    </div>
+                    <canvas id="topThemesByPostVolChart"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">
+                        Top Themes by Engagement Volume
+                    </div>
+                    <canvas id="topThemesByEngagementVolChart"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">
+                        Content Format by Posts
+                    </div>
+                    <canvas id="contentFormatsPostsChart"></canvas>
+                </div>
+                <div class="chart">
+                    <div class="chart-title">
+                        Content Format by Engagements
+                    </div>
+                    <canvas id="contentFormatsEngagementsChart"></canvas>
+                </div>
+                <div class="table-container">
+                    <div class="chart-2">
+                        <div class="chart-title">
+                            Top 25 Posts
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Executive Name</th>
+                                    <th>Company</th>
+                                    <th>Industry</th>
+                                    <th>Theme</th>
+                                    <th>Post Content</th>
+                                    <th>Engagement Count</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topPostsTableBody">
+                                <!-- Table rows will be dynamically populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </div>
+
+    <div class="postContent-search">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search post content..." />
+            <button onclick="searchPostContent()">Search</button>
+        </div>
+        <div id="results">
+            <!-- Filtered numerical data displays here -->
+            <div class="summary-grid">
+                <div class="summary-card-1">
+                    <div class="top">Unique Audience Members</div>
+                    <div class="number" id="unique-audience-1">0</div>
+                </div>
+                <div class="summary-card-2">
+                    <div class="top">Total Unique Posts</div>
+                    <div class="number" id="unique-posts-1">0</div>
+                </div>
+                <div class="summary-card-3">
+                    <div class="top">Total Engagements on Selected Audience Posts</div>
+                    <div class="number" id="total-engagements-1">0</div>
+                </div>
+                <div class="summary-card-4">
+                    <div class="top">Average Engagements Per Post</div>
+                    <div class="number" id="average-engagements-1">0</div>
+                </div>
+            </div>
+            <div class="chart-grid">
+                <div class="table-container">
+                    <div class="chart-2">
+                        <div class="chart-title">
+                            Top 25 Posts
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Executive Name</th>
+                                    <th>Company</th>
+                                    <th>Industry</th>
+                                    <th>Theme</th>
+                                    <th>Post Content</th>
+                                    <th>Engagement Count</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topPostsTableBody1">
+                                <!-- Table rows will be dynamically populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="r_and_a">
+        <a href="mailto:RA@TheBlissGrp.com">
+            <img src="../static/images/r&a.png" alt="Email Us"/>
+        </a>
+    </div>
+
+    <script src="../static/js/index.js"></script>
+</body>
+</html>
