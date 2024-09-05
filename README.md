@@ -1,7 +1,4 @@
-# Docker Installation available under esp-main
-
-
-
+# Docker File : Build Docker image from /website
 
 
 #how to push to github everytime you make a change
